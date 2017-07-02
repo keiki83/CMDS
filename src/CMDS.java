@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class CMDS {
 
-	private JFrame frame;
+	private JFrame frmCmds;
 
 	/**
 	 * Launch the application.
@@ -14,7 +14,7 @@ public class CMDS {
 			public void run() {
 				try {
 					CMDS window = new CMDS();
-					window.frame.setVisible(true);
+					window.frmCmds.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -33,9 +33,10 @@ public class CMDS {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCmds = new JFrame();
+		frmCmds.setTitle("CMDS");
+		frmCmds.setBounds(100, 100, 450, 300);
+		frmCmds.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }
