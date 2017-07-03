@@ -1,35 +1,20 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 public class CMDS {
+	// variables
+	private int count = 0;
 
+	// gui variables
 	private JFrame frmCmds;
-	private Process p;
-	private JTextField serverExe;
-	private JTextField param0;
-	private JTextField val0;
-	private JTextField param1;
-	private JTextField val1;
-	private JTextField param2;
-	private JTextField val2;
-	private JScrollPane scrollPane;
-	private JLabel lblNewLabel;
+	private JButton btnRemoveServer;
 
 	/**
 	 * Launch the application.
@@ -59,117 +44,40 @@ public class CMDS {
 	 */
 	private void initialize() {
 		frmCmds = new JFrame();
-		frmCmds.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				if(p != null && p.isAlive()) {
-					p.destroy();
-				}
-			}
-		});
 		frmCmds.setTitle("CMDS");
-		frmCmds.setBounds(100, 100, 1074, 535);
+		frmCmds.setBounds(100, 100, 832, 595);
 		frmCmds.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCmds.getContentPane().setLayout(null);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(520, 11, 528, 394);
-		frmCmds.getContentPane().add(scrollPane);
 
-		JTextArea outputText = new JTextArea();
-		scrollPane.setViewportView(outputText);
-		outputText.setWrapStyleWord(true);
-		outputText.setEditable(false);
-		outputText.setLineWrap(true);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 11, 796, 509);
+		frmCmds.getContentPane().add(tabbedPane);
 
-		JTextPane serverPath = new JTextPane();
-		serverPath.setText("D:\\SteamLibrary\\steamapps\\common\\Avorion\\");
-		serverPath.setBounds(10, 11, 487, 20);
-		frmCmds.getContentPane().add(serverPath);
+		JMenuBar menuBar = new JMenuBar();
+		frmCmds.setJMenuBar(menuBar);
 
-		JButton btnLaunchServer = new JButton("Launch Server");
-		btnLaunchServer.addMouseListener(new MouseAdapter() {
+		JButton btnAddServer = new JButton("Add Server");
+		btnAddServer.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-					// launch engine			
-					File dir = new File(serverPath.getText());
-					String[] cmd = {serverPath.getText() + serverExe.getText(), param0.getText(), val0.getText(), param1.getText(), val1.getText(), param2.getText(), val2.getText()};
-					ProcessBuilder pb = new ProcessBuilder(cmd);
-					pb.directory(dir);
-					p = pb.start();
-
-
-					new Thread(new Runnable() {
-						public void run() {
-							BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-							String line = null; 
-							try {
-								// update output text window
-								while ((line = input.readLine()) != null) {	
-									outputText.append(line + "\r\n");
-									outputText.setCaretPosition(outputText.getDocument().getLength());
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					}).start();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			public void mouseClicked(MouseEvent mouseClick) {
+				if(SwingUtilities.isLeftMouseButton(mouseClick)) {
+					tabbedPane.add("Server" + Integer.toString(count) , new Server(count));
+					count++;
 				}
 			}
 		});
-		btnLaunchServer.setBounds(10, 164, 119, 23);
-		frmCmds.getContentPane().add(btnLaunchServer);
+		menuBar.add(btnAddServer);
 
-		serverExe = new JTextField();
-		serverExe.setText("bin\\AvorionServer.exe");
-		serverExe.setBounds(10, 42, 487, 20);
-		frmCmds.getContentPane().add(serverExe);
-		serverExe.setColumns(10);
-		
-		param0 = new JTextField();
-		param0.setText("--use-steam-networking");
-		param0.setBounds(10, 72, 189, 20);
-		frmCmds.getContentPane().add(param0);
-		param0.setColumns(10);
-		
-		val0 = new JTextField();
-		val0.setText("1");
-		val0.setColumns(10);
-		val0.setBounds(209, 72, 189, 20);
-		frmCmds.getContentPane().add(val0);
-		
-		param1 = new JTextField();
-		param1.setText("--galaxy-name");
-		param1.setColumns(10);
-		param1.setBounds(10, 103, 189, 20);
-		frmCmds.getContentPane().add(param1);
-		
-		val1 = new JTextField();
-		val1.setText("dedicated_server_beta");
-		val1.setColumns(10);
-		val1.setBounds(209, 103, 189, 20);
-		frmCmds.getContentPane().add(val1);
-		
-		param2 = new JTextField();
-		param2.setText("--admin");
-		param2.setColumns(10);
-		param2.setBounds(10, 134, 189, 20);
-		frmCmds.getContentPane().add(param2);
-		
-		val2 = new JTextField();
-		val2.setText("tps");
-		val2.setColumns(10);
-		val2.setBounds(209, 134, 189, 20);
-		frmCmds.getContentPane().add(val2);
-		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(CMDS.class.getResource("/resources/cmds-w-resized.png")));
-		lblNewLabel.setBounds(10, 393, 146, 103);
-		frmCmds.getContentPane().add(lblNewLabel);
+		btnRemoveServer = new JButton("Remove Server");
+		btnRemoveServer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseClick) {
+				if(SwingUtilities.isLeftMouseButton(mouseClick)) {
+					tabbedPane.remove(tabbedPane.getSelectedIndex());
+				}
+			}
+		});
+		menuBar.add(btnRemoveServer);
 
 	}
 }

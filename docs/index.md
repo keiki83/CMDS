@@ -21,3 +21,6 @@ More information coming soon!
 ![Prototype](prototype.png)
 Working prototype of parameters being passed to a process builder, setting the working directory and executable. Textfield is updated in realtime for server running in background.
 
+![Prototype2](prototype2.png)
+Modularized the code to allow for multiple servers to be handled via a tabbed pane.
+
