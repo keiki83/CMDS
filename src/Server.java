@@ -55,42 +55,6 @@ public class Server extends JPanel {
 		serverExe.setBounds(139, 42, 487, 20);
 		add(serverExe);
 
-		//		param0 = new JTextField();
-		//		param0.setText("--use-steam-networking");
-		//		param0.setColumns(10);
-		//		param0.setBounds(10, 73, 189, 20);
-		//		add(param0);
-		//		
-		//		param1 = new JTextField();
-		//		param1.setText("--galaxy-name");
-		//		param1.setColumns(10);
-		//		param1.setBounds(10, 104, 189, 20);
-		//		add(param1);
-		//		
-		//		param2 = new JTextField();
-		//		param2.setText("--admin");
-		//		param2.setColumns(10);
-		//		param2.setBounds(10, 135, 189, 20);
-		//		add(param2);
-		//		
-		//		val0 = new JTextField();
-		//		val0.setText("1");
-		//		val0.setColumns(10);
-		//		val0.setBounds(209, 73, 189, 20);
-		//		add(val0);
-		//		
-		//		val1 = new JTextField();
-		//		val1.setText("dedicated_server_beta");
-		//		val1.setColumns(10);
-		//		val1.setBounds(209, 104, 189, 20);
-		//		add(val1);
-		//		
-		//		val2 = new JTextField();
-		//		val2.setText("tps");
-		//		val2.setColumns(10);
-		//		val2.setBounds(209, 135, 189, 20);
-		//		add(val2);
-
 		JButton btnLaunchServer = new JButton("Launch Server");
 		btnLaunchServer.addMouseListener(new MouseAdapter() {
 			@Override
