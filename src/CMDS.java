@@ -15,6 +15,7 @@ public class CMDS {
 	// gui variables
 	private JFrame frmCmds;
 	private JButton btnRemoveServer;
+	private JTabbedPane tabbedPane;
 
 	/**
 	 * Launch the application.
@@ -37,6 +38,7 @@ public class CMDS {
 	 */
 	public CMDS() {
 		initialize();
+		loadServers();
 	}
 
 	/**
@@ -49,7 +51,7 @@ public class CMDS {
 		frmCmds.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCmds.getContentPane().setLayout(null);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 11, 796, 509);
 		frmCmds.getContentPane().add(tabbedPane);
 
@@ -79,5 +81,25 @@ public class CMDS {
 		});
 		menuBar.add(btnRemoveServer);
 
+	}
+
+	private void loadServers() {
+		tabbedPane.add("Server" + Integer.toString(count) , 
+				new Server(count, 
+						"D:\\SteamLibrary\\steamapps\\common\\Avorion\\", 
+						"D:\\SteamLibrary\\steamapps\\common\\Avorion\\bin\\AvorionServer.exe", 
+						"--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps"));
+		count++;
+		tabbedPane.add("Server" + Integer.toString(count) , 
+				new Server(count, 
+						"D:\\SteamLibrary\\steamapps\\common\\7 Days to Die Dedicated Server\\", 
+						"D:\\SteamLibrary\\steamapps\\common\\7 Days to Die Dedicated Server\\7DaysToDieServer.exe", 
+						"-logfile 7DaysToDieServer_Data\\output_log.txt -quit -batchmode -nographics -configfile=serverconfig.xml -dedicated"));
+		count++;tabbedPane.add("Server" + Integer.toString(count) , 
+				new Server(count, 
+						"c:/", 
+						"cmd.exe", 
+						""));
+		count++;
 	}
 }

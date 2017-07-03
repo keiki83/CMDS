@@ -4,9 +4,12 @@ import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
@@ -19,89 +22,142 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Server extends JPanel {
 	// variables
 	private Process p;
-
+	private BufferedWriter consoleInput;
+	private BufferedReader consoleOutput;
+	
 	// GUI variables
 	private JTextPane serverPath;
 	private JTextField serverExe;
-	private JTextField param0;
-	private JTextField param1;
-	private JTextField param2;
-	private JTextField val0;
-	private JTextField val1;
-	private JTextField val2;
 	private JTextArea serverConsole;
+	private JButton btnLaunchServer;
 	private JButton btnStopServer;
 	private JScrollPane scrollPane;
 	private JTextField serverArg;
+	private JTextField commandLine;
+	private JLabel lblWorkingDirectory;
+	private	JLabel lblExecutable;
+	private JLabel lblArguements;
 
-	/**
+	/*
 	 * Create the panel.
 	 */
 	public Server(int index) {
+		this(index, "", "", "");
+	}
+		
+	public Server(int index, String path, String exe, String arg) {
 		setLayout(null);
 
+		/*
+		 *	Labels
+		 */
+		
+		lblWorkingDirectory = new JLabel("Working Directory");
+		lblWorkingDirectory.setBounds(10, 11, 86, 14);
+		add(lblWorkingDirectory);
+		
+		lblExecutable = DefaultComponentFactory.getInstance().createLabel("Executable");
+		lblExecutable.setBounds(10, 45, 92, 14);
+		add(lblExecutable);
+		
+		lblArguements = DefaultComponentFactory.getInstance().createLabel("Arguements");
+		lblArguements.setBounds(10, 76, 92, 14);
+		add(lblArguements);
+		
+		/*
+		 * 	JTextPanes
+		 */
+		
 		serverPath = new JTextPane();
-		serverPath.setText("D:\\SteamLibrary\\steamapps\\common\\Avorion\\");
+		serverPath.setText(path);
 		serverPath.setBounds(139, 11, 487, 20);
 		add(serverPath);
 
 		serverExe = new JTextField();
-		serverExe.setText("bin\\AvorionServer.exe");
+		serverExe.setText(exe);
 		serverExe.setColumns(10);
 		serverExe.setBounds(139, 42, 487, 20);
 		add(serverExe);
+		
+		serverArg = new JTextField();
+		serverArg.setText(arg);
+		serverArg.setBounds(139, 73, 487, 20);
+		add(serverArg);
+		serverArg.setColumns(10);
 
-		JButton btnLaunchServer = new JButton("Launch Server");
-		btnLaunchServer.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				launchServer();
-			}
-		});
+		/*
+		 * 	JButtons
+		 */
+		
+		btnLaunchServer = new JButton("Launch Server");
 		btnLaunchServer.setBounds(636, 11, 119, 23);
 		add(btnLaunchServer);
 
+		btnStopServer = new JButton("Stop Server");
+		btnStopServer.setBounds(636, 41, 119, 23);
+		add(btnStopServer);
+		
+		/*
+		 * 	JScrollPanes
+		 */
+		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 104, 756, 362);
+		scrollPane.setBounds(10, 104, 756, 331);
 		add(scrollPane);
 
+		/*
+		 * 	JTextAreas
+		 */
+		
 		serverConsole = new JTextArea();
 		scrollPane.setViewportView(serverConsole);
 		serverConsole.setWrapStyleWord(true);
 		serverConsole.setLineWrap(true);
 		serverConsole.setEditable(false);
 
-		btnStopServer = new JButton("Stop Server");
+		commandLine = new JTextField();
+		commandLine.setBounds(10, 446, 756, 20);
+		add(commandLine);
+		commandLine.setColumns(10);
+
+		/*
+		 *	Listeners
+		 */
+		btnLaunchServer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				launchServer();
+			}
+		});
+		
 		btnStopServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stopServer();
 			}
 		});
-		btnStopServer.setBounds(636, 41, 119, 23);
-		add(btnStopServer);
+		
+		commandLine.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent key) {
+				if(key.getKeyCode()==KeyEvent.VK_ENTER){						
+					try {
+						consoleInput.write(commandLine.getText() + "\n");
+						consoleInput.flush();
+						commandLine.setText("");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-		serverArg = new JTextField();
-		serverArg.setText("--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps");
-		serverArg.setBounds(139, 73, 487, 20);
-		add(serverArg);
-		serverArg.setColumns(10);
-		
-		JLabel lblWorkingDirectory = new JLabel("Working Directory");
-		lblWorkingDirectory.setBounds(10, 11, 86, 14);
-		add(lblWorkingDirectory);
-		
-		JLabel lblExecutable = DefaultComponentFactory.getInstance().createLabel("Executable");
-		lblExecutable.setBounds(10, 45, 92, 14);
-		add(lblExecutable);
-		
-		JLabel lblArguements = DefaultComponentFactory.getInstance().createLabel("Arguements");
-		lblArguements.setBounds(10, 76, 92, 14);
-		add(lblArguements);
-
+				}
+			}
+		});
 	}
 
 	/*
@@ -114,20 +170,22 @@ public class Server extends JPanel {
 			File dir = new File(serverPath.getText());
 			StringTokenizer st = new StringTokenizer(serverArg.getText());
 			LinkedList<String> cmd = new LinkedList<String>();
-			cmd.add(serverPath.getText() + serverExe.getText());
+			cmd.add(serverExe.getText());
 			while (st.hasMoreTokens()) {
 				cmd.add(st.nextToken());
 			}
 			ProcessBuilder pb = new ProcessBuilder(cmd);
 			pb.directory(dir);
-			p = pb.start();
+			p = pb.start();			consoleInput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			consoleOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		
 			new Thread(new Runnable() {
 				public void run() {
-					BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
 					String line = null; 
 					try {
 						// update output text window
-						while ((line = input.readLine()) != null) {	
+						while ((line = consoleOutput.readLine()) != null) {	
 							serverConsole.append(line + "\r\n");
 							serverConsole.setCaretPosition(serverConsole.getDocument().getLength());
 						}
