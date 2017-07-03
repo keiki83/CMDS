@@ -24,3 +24,6 @@ Working prototype of parameters being passed to a process builder, setting the w
 ![Prototype2](prototype2.png)
 Modularized the code to allow for multiple servers to be handled via a tabbed pane.
 
+![Prototype3](prototype3.png)
+Beginning to add communication to running dedicated servers, changed layout.
+
