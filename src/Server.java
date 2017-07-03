@@ -7,18 +7,23 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+
+import com.ibm.icu.util.StringTokenizer;
+
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class Server extends JPanel {
 	// variables
-	Process p;
-	
+	private Process p;
+
 	// GUI variables
 	private JTextPane serverPath;
 	private JTextField serverExe;
@@ -31,60 +36,61 @@ public class Server extends JPanel {
 	private JTextArea serverConsole;
 	private JButton btnStopServer;
 	private JScrollPane scrollPane;
+	private JTextField serverArg;
 
 	/**
 	 * Create the panel.
 	 */
 	public Server(int index) {
 		setLayout(null);
-		
+
 		serverPath = new JTextPane();
 		serverPath.setText("D:\\SteamLibrary\\steamapps\\common\\Avorion\\");
-		serverPath.setBounds(10, 11, 487, 20);
+		serverPath.setBounds(139, 11, 487, 20);
 		add(serverPath);
-		
+
 		serverExe = new JTextField();
 		serverExe.setText("bin\\AvorionServer.exe");
 		serverExe.setColumns(10);
-		serverExe.setBounds(10, 42, 487, 20);
+		serverExe.setBounds(139, 42, 487, 20);
 		add(serverExe);
-		
-		param0 = new JTextField();
-		param0.setText("--use-steam-networking");
-		param0.setColumns(10);
-		param0.setBounds(10, 73, 189, 20);
-		add(param0);
-		
-		param1 = new JTextField();
-		param1.setText("--galaxy-name");
-		param1.setColumns(10);
-		param1.setBounds(10, 104, 189, 20);
-		add(param1);
-		
-		param2 = new JTextField();
-		param2.setText("--admin");
-		param2.setColumns(10);
-		param2.setBounds(10, 135, 189, 20);
-		add(param2);
-		
-		val0 = new JTextField();
-		val0.setText("1");
-		val0.setColumns(10);
-		val0.setBounds(209, 73, 189, 20);
-		add(val0);
-		
-		val1 = new JTextField();
-		val1.setText("dedicated_server_beta");
-		val1.setColumns(10);
-		val1.setBounds(209, 104, 189, 20);
-		add(val1);
-		
-		val2 = new JTextField();
-		val2.setText("tps");
-		val2.setColumns(10);
-		val2.setBounds(209, 135, 189, 20);
-		add(val2);
-		
+
+		//		param0 = new JTextField();
+		//		param0.setText("--use-steam-networking");
+		//		param0.setColumns(10);
+		//		param0.setBounds(10, 73, 189, 20);
+		//		add(param0);
+		//		
+		//		param1 = new JTextField();
+		//		param1.setText("--galaxy-name");
+		//		param1.setColumns(10);
+		//		param1.setBounds(10, 104, 189, 20);
+		//		add(param1);
+		//		
+		//		param2 = new JTextField();
+		//		param2.setText("--admin");
+		//		param2.setColumns(10);
+		//		param2.setBounds(10, 135, 189, 20);
+		//		add(param2);
+		//		
+		//		val0 = new JTextField();
+		//		val0.setText("1");
+		//		val0.setColumns(10);
+		//		val0.setBounds(209, 73, 189, 20);
+		//		add(val0);
+		//		
+		//		val1 = new JTextField();
+		//		val1.setText("dedicated_server_beta");
+		//		val1.setColumns(10);
+		//		val1.setBounds(209, 104, 189, 20);
+		//		add(val1);
+		//		
+		//		val2 = new JTextField();
+		//		val2.setText("tps");
+		//		val2.setColumns(10);
+		//		val2.setBounds(209, 135, 189, 20);
+		//		add(val2);
+
 		JButton btnLaunchServer = new JButton("Launch Server");
 		btnLaunchServer.addMouseListener(new MouseAdapter() {
 			@Override
@@ -92,39 +98,62 @@ public class Server extends JPanel {
 				launchServer();
 			}
 		});
-		btnLaunchServer.setBounds(10, 166, 119, 23);
+		btnLaunchServer.setBounds(636, 11, 119, 23);
 		add(btnLaunchServer);
-		
+
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 200, 756, 266);
+		scrollPane.setBounds(10, 104, 756, 362);
 		add(scrollPane);
-		
+
 		serverConsole = new JTextArea();
 		scrollPane.setViewportView(serverConsole);
 		serverConsole.setWrapStyleWord(true);
 		serverConsole.setLineWrap(true);
 		serverConsole.setEditable(false);
-		
+
 		btnStopServer = new JButton("Stop Server");
 		btnStopServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stopServer();
 			}
 		});
-		btnStopServer.setBounds(139, 166, 119, 23);
+		btnStopServer.setBounds(636, 41, 119, 23);
 		add(btnStopServer);
 
+		serverArg = new JTextField();
+		serverArg.setText("--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps");
+		serverArg.setBounds(139, 73, 487, 20);
+		add(serverArg);
+		serverArg.setColumns(10);
+		
+		JLabel lblWorkingDirectory = new JLabel("Working Directory");
+		lblWorkingDirectory.setBounds(10, 11, 86, 14);
+		add(lblWorkingDirectory);
+		
+		JLabel lblExecutable = DefaultComponentFactory.getInstance().createLabel("Executable");
+		lblExecutable.setBounds(10, 45, 92, 14);
+		add(lblExecutable);
+		
+		JLabel lblArguements = DefaultComponentFactory.getInstance().createLabel("Arguements");
+		lblArguements.setBounds(10, 76, 92, 14);
+		add(lblArguements);
+
 	}
-	
+
 	/*
 	 *	Helper Functions 
 	 */
-	
+
 	// Launch the Server
 	private void launchServer() {
 		try {	
 			File dir = new File(serverPath.getText());
-			String[] cmd = {serverPath.getText() + serverExe.getText(), param0.getText(), val0.getText(), param1.getText(), val1.getText(), param2.getText(), val2.getText()};
+			StringTokenizer st = new StringTokenizer(serverArg.getText());
+			LinkedList<String> cmd = new LinkedList<String>();
+			cmd.add(serverPath.getText() + serverExe.getText());
+			while (st.hasMoreTokens()) {
+				cmd.add(st.nextToken());
+			}
 			ProcessBuilder pb = new ProcessBuilder(cmd);
 			pb.directory(dir);
 			p = pb.start();
@@ -148,12 +177,11 @@ public class Server extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Shutdown the Server forcefully
 	private void stopServer() {
 		if(p != null & p.isAlive()) {
 			p.destroy();
 		}
 	}
-	
 }
