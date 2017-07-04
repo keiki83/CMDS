@@ -17,6 +17,14 @@ More information coming soon!
 * [ ] Custom Batch File Integration
 * [ ] Automatic Update
 
+## ChangeLog
+* 1.04 - Added Relative Path option to executable. Added more groundwork for load from file.
+* 1.03 - Added Communication to sub processes. Added groundwork for load from file.
+* 1.02 - Modularized code. Added tabbedpane.
+* 1.01 - Implemented process builder
+* 1.00 - Initial prototype
+
+
 ## Images
 ![Prototype](prototype.png)
 Working prototype of parameters being passed to a process builder, setting the working directory and executable. Textfield is updated in realtime for server running in background.

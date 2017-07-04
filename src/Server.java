@@ -1,3 +1,8 @@
+/*
+ * Author: Michael R. Callan III
+ * Version: 1.04
+ */
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,6 +29,7 @@ import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JCheckBox;
 
 public class Server extends JPanel {
 	// variables
@@ -43,15 +49,12 @@ public class Server extends JPanel {
 	private JLabel lblWorkingDirectory;
 	private	JLabel lblExecutable;
 	private JLabel lblArguements;
+	private JCheckBox chckbxRelativePath;
 
 	/*
 	 * Create the panel.
 	 */
-	public Server(int index) {
-		this(index, "", "", "");
-	}
-		
-	public Server(int index, String path, String exe, String arg) {
+	public Server(ServerSettings settings) {
 		setLayout(null);
 
 		/*
@@ -70,23 +73,27 @@ public class Server extends JPanel {
 		lblArguements.setBounds(10, 76, 92, 14);
 		add(lblArguements);
 		
+		JLabel lblOptions = new JLabel("Options");
+		lblOptions.setBounds(10, 101, 86, 14);
+		add(lblOptions);
+		
 		/*
 		 * 	JTextPanes
 		 */
 		
 		serverPath = new JTextPane();
-		serverPath.setText(path);
+		serverPath.setText(settings.getPath());
 		serverPath.setBounds(139, 11, 487, 20);
 		add(serverPath);
 
 		serverExe = new JTextField();
-		serverExe.setText(exe);
+		serverExe.setText(settings.getExe());
 		serverExe.setColumns(10);
 		serverExe.setBounds(139, 42, 487, 20);
 		add(serverExe);
 		
 		serverArg = new JTextField();
-		serverArg.setText(arg);
+		serverArg.setText(settings.getArg());
 		serverArg.setBounds(139, 73, 487, 20);
 		add(serverArg);
 		serverArg.setColumns(10);
@@ -108,7 +115,7 @@ public class Server extends JPanel {
 		 */
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 104, 756, 331);
+		scrollPane.setBounds(10, 152, 756, 283);
 		add(scrollPane);
 
 		/*
@@ -125,10 +132,22 @@ public class Server extends JPanel {
 		commandLine.setBounds(10, 446, 756, 20);
 		add(commandLine);
 		commandLine.setColumns(10);
+		
+		/*
+		 * 	JCheckBoxes
+		 */
+		
+		chckbxRelativePath = new JCheckBox("Relative Path Executable");
+		chckbxRelativePath.setBounds(10, 122, 200, 23);
+		add(chckbxRelativePath);
+		if(settings.isRelativePath()) {
+			chckbxRelativePath.setSelected(true);
+		}
 
 		/*
 		 *	Listeners
 		 */
+		
 		btnLaunchServer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -170,7 +189,13 @@ public class Server extends JPanel {
 			File dir = new File(serverPath.getText());
 			StringTokenizer st = new StringTokenizer(serverArg.getText());
 			LinkedList<String> cmd = new LinkedList<String>();
-			cmd.add(serverExe.getText());
+			if(chckbxRelativePath.isSelected()) {
+				cmd.add(serverPath.getText() + serverExe.getText());
+			}
+			else {
+				cmd.add(serverExe.getText());
+			}
+			
 			while (st.hasMoreTokens()) {
 				cmd.add(st.nextToken());
 			}

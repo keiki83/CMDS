@@ -1,5 +1,9 @@
-import java.awt.EventQueue;
+/*
+ * Author: Michael R. Callan III
+ * Version: 1.04
+ */
 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -9,9 +13,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 public class CMDS {
-	// variables
-	private int count = 0;
-
 	// gui variables
 	private JFrame frmCmds;
 	private JButton btnRemoveServer;
@@ -63,8 +64,7 @@ public class CMDS {
 			@Override
 			public void mouseClicked(MouseEvent mouseClick) {
 				if(SwingUtilities.isLeftMouseButton(mouseClick)) {
-					tabbedPane.add("Server" + Integer.toString(count) , new Server(count));
-					count++;
+					tabbedPane.add("Server", new Server(new ServerSettings()));
 				}
 			}
 		});
@@ -84,22 +84,12 @@ public class CMDS {
 	}
 
 	private void loadServers() {
-		tabbedPane.add("Server" + Integer.toString(count) , 
-				new Server(count, 
-						"D:\\SteamLibrary\\steamapps\\common\\Avorion\\", 
-						"D:\\SteamLibrary\\steamapps\\common\\Avorion\\bin\\AvorionServer.exe", 
-						"--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps"));
-		count++;
-		tabbedPane.add("Server" + Integer.toString(count) , 
-				new Server(count, 
-						"D:\\SteamLibrary\\steamapps\\common\\7 Days to Die Dedicated Server\\", 
-						"D:\\SteamLibrary\\steamapps\\common\\7 Days to Die Dedicated Server\\7DaysToDieServer.exe", 
-						"-logfile 7DaysToDieServer_Data\\output_log.txt -quit -batchmode -nographics -configfile=serverconfig.xml -dedicated"));
-		count++;tabbedPane.add("Server" + Integer.toString(count) , 
-				new Server(count, 
-						"c:/", 
-						"cmd.exe", 
-						""));
-		count++;
+		ServerSettings temp = new ServerSettings();
+		temp.setName("Avorion");
+		temp.setPath("D:\\SteamLibrary\\steamapps\\common\\Avorion\\");
+		temp.setExe("bin\\AvorionServer.exe");
+		temp.setArg("--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps");
+		temp.setRelativePath(false);	
+		tabbedPane.add(temp.getName(), new Server(temp));
 	}
 }
