@@ -1,3 +1,7 @@
+/*
+ * Author: Michael R. Callan III
+ * Version: 1.05
+ */
 
 public class ServerSettings {
 	// variables

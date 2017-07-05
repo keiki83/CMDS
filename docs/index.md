@@ -18,8 +18,9 @@ More information coming soon!
 * [ ] Automatic Update
 
 ## ChangeLog
-* 1.04 - Added Relative Path option to executable. Added more groundwork for load from file.
-* 1.03 - Added Communication to sub processes. Added groundwork for load from file.
+* 1.05 - Added load server settings from file.
+* 1.04 - Added Relative Path option to executable. 
+* 1.03 - Added communication to sub processes.
 * 1.02 - Modularized code. Added tabbedpane.
 * 1.01 - Implemented process builder
 * 1.00 - Initial prototype
@@ -28,7 +29,7 @@ More information coming soon!
 ## Images
 ![Prototype](prototype.png)
 
-Working prototype of parameters being passed to a process builder, setting the working directory and executable. Textfield is updated in realtime for server running in background.
+Working prototype of parameters being passed to a process builder, setting the working directory and executable. Textfield is updated in real time for server running in background.
 
 ![Prototype2](prototype2.png)
 

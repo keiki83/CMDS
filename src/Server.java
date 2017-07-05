@@ -1,6 +1,6 @@
 /*
  * Author: Michael R. Callan III
- * Version: 1.04
+ * Version: 1.05
  */
 
 import javax.swing.JPanel;

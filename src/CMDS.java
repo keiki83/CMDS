@@ -1,6 +1,6 @@
 /*
  * Author: Michael R. Callan III
- * Version: 1.04
+ * Version: 1.05
  */
 
 import java.awt.EventQueue;
@@ -8,12 +8,18 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+
 import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 public class CMDS {
-	// gui variables
+	// GUI variables
 	private JFrame frmCmds;
 	private JButton btnRemoveServer;
 	private JTabbedPane tabbedPane;
@@ -84,12 +90,37 @@ public class CMDS {
 	}
 
 	private void loadServers() {
-		ServerSettings temp = new ServerSettings();
-		temp.setName("Avorion");
-		temp.setPath("D:\\SteamLibrary\\steamapps\\common\\Avorion\\");
-		temp.setExe("bin\\AvorionServer.exe");
-		temp.setArg("--use-steam-networking 1 --galaxy-name dedicated_server_beta --admin tps");
-		temp.setRelativePath(false);	
-		tabbedPane.add(temp.getName(), new Server(temp));
+		LinkedList<String> settingValues = new LinkedList<String>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("servers.txt"));
+			String line;
+			
+			while((line = br.readLine()) != null) {
+				if(line.length() > 0) {
+					settingValues.add(line);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(settingValues.size() >= 5) {
+			ServerSettings settings = new ServerSettings();
+			settings.setName(settingValues.pop());
+			settings.setPath(settingValues.pop());
+			settings.setExe(settingValues.pop());
+			settings.setArg(settingValues.pop());
+			if(settingValues.pop().equals("true")) {
+				settings.setRelativePath(true);
+			}
+			else {
+				settings.setRelativePath(false);
+			}
+			tabbedPane.add(settings.getName(), new Server(settings));
+		}
 	}
 }
