@@ -18,6 +18,7 @@ More information coming soon!
 * [ ] Automatic Update
 
 ## ChangeLog
+* 1.07 - Added remove server (delete server settings file). Added name server on creation.
 * 1.06 - Added save server settings to file.
 * 1.05 - Added load server settings from file.
 * 1.04 - Added Relative Path option to executable. 

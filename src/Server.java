@@ -1,6 +1,6 @@
 /*
  * Author: Michael R. Callan III
- * Version: 1.06
+ * Version: 1.07
  */
 
 import javax.swing.JPanel;
@@ -39,15 +39,15 @@ public class Server extends JPanel {
 	private BufferedReader consoleOutput;
 	
 	// GUI variables
-	private JTextPane serverPath;
+	private JTextField serverPath;
 	private JTextField serverExe;
+	private JTextField serverArg;
+	private JTextField commandLine;
+	private JScrollPane scrollPane;
 	private JTextArea serverConsole;
 	private JButton btnLaunchServer;
 	private JButton btnStopServer;
 	private JButton btnSaveSettings;
-	private JScrollPane scrollPane;
-	private JTextField serverArg;
-	private JTextField commandLine;
 	private JLabel lblWorkingDirectory;
 	private	JLabel lblExecutable;
 	private JLabel lblArguements;
@@ -83,7 +83,7 @@ public class Server extends JPanel {
 		 * 	JTextPanes
 		 */
 		
-		serverPath = new JTextPane();
+		serverPath = new JTextField();
 		serverPath.setText(serverSettings.getPath());
 		serverPath.setBounds(139, 11, 487, 20);
 		add(serverPath);
@@ -105,15 +105,15 @@ public class Server extends JPanel {
 		 */
 		
 		btnLaunchServer = new JButton("Launch Server");
-		btnLaunchServer.setBounds(636, 11, 119, 23);
+		btnLaunchServer.setBounds(647, 10, 119, 23);
 		add(btnLaunchServer);
 
 		btnStopServer = new JButton("Stop Server");
-		btnStopServer.setBounds(636, 41, 119, 23);
+		btnStopServer.setBounds(647, 41, 119, 23);
 		add(btnStopServer);
 		
 		btnSaveSettings = new JButton("Save Settings");
-		btnSaveSettings.setBounds(636, 72, 119, 23);
+		btnSaveSettings.setBounds(647, 72, 119, 23);
 		add(btnSaveSettings);
 		
 		/*

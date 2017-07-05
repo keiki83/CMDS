@@ -1,6 +1,6 @@
 /*
  * Author: Michael R. Callan III
- * Version: 1.06
+ * Version: 1.07
  */
 
 import java.io.File;
@@ -22,45 +22,9 @@ public class LoadSettings {
 
 		// Load settings of each file
 		for(int i = 0; i < serverFiles.length; i++) {
-			if(!serverFiles[i].isFile() ||  !serverFiles[i].getName().contains(".properties")) {
-				continue;
-			}
-
-			ServerSettings settings = new ServerSettings(savePath);
-
-			try {
-				FileInputStream in = new FileInputStream(savePath + "/" + serverFiles[i].getName());
-				Properties properties = new Properties();
-				properties.load(in);
-				if(properties.containsKey("name")) {
-					settings.setName(properties.getProperty("name"));
-				}
-				if(properties.containsKey("path")) {
-					settings.setPath(properties.getProperty("path"));
-				}
-				if(properties.containsKey("exe")) {
-					settings.setExe(properties.getProperty("exe"));
-				}
-				if(properties.containsKey("arg")) {
-					settings.setArg(properties.getProperty("arg"));
-				}
-				if(properties.containsKey("relative")) {
-					if(properties.getProperty("relative").equals("true")) {
-						settings.setRelativePath(true);
-					}
-					else {
-						settings.setRelativePath(false);
-					}
-				}			
-				in.close();
-				serverSettings.add(settings);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			if(serverFiles[i].isFile() && serverFiles[i].getName().contains(".properties")) {
+				serverSettings.add(new ServerSettings(savePath, serverFiles[i].getName()));
+			}			
 		}
 	}
 
