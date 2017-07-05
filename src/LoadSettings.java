@@ -23,7 +23,6 @@ public class LoadSettings {
 		// Load settings of each file
 		for(int i = 0; i < serverFiles.length; i++) {
 			if(!serverFiles[i].isFile() ||  !serverFiles[i].getName().contains(".properties")) {
-				System.out.println(serverFiles[i].getName());
 				continue;
 			}
 

@@ -33,6 +33,7 @@ import javax.swing.JCheckBox;
 
 public class Server extends JPanel {
 	// variables
+	private ServerSettings serverSettings;
 	private Process p;
 	private BufferedWriter consoleInput;
 	private BufferedReader consoleOutput;
@@ -43,6 +44,7 @@ public class Server extends JPanel {
 	private JTextArea serverConsole;
 	private JButton btnLaunchServer;
 	private JButton btnStopServer;
+	private JButton btnSaveSettings;
 	private JScrollPane scrollPane;
 	private JTextField serverArg;
 	private JTextField commandLine;
@@ -56,7 +58,7 @@ public class Server extends JPanel {
 	 */
 	public Server(ServerSettings settings) {
 		setLayout(null);
-
+		this.serverSettings = settings;
 		/*
 		 *	Labels
 		 */
@@ -82,18 +84,18 @@ public class Server extends JPanel {
 		 */
 		
 		serverPath = new JTextPane();
-		serverPath.setText(settings.getPath());
+		serverPath.setText(serverSettings.getPath());
 		serverPath.setBounds(139, 11, 487, 20);
 		add(serverPath);
 
 		serverExe = new JTextField();
-		serverExe.setText(settings.getExe());
+		serverExe.setText(serverSettings.getExe());
 		serverExe.setColumns(10);
 		serverExe.setBounds(139, 42, 487, 20);
 		add(serverExe);
 		
 		serverArg = new JTextField();
-		serverArg.setText(settings.getArg());
+		serverArg.setText(serverSettings.getArg());
 		serverArg.setBounds(139, 73, 487, 20);
 		add(serverArg);
 		serverArg.setColumns(10);
@@ -109,6 +111,10 @@ public class Server extends JPanel {
 		btnStopServer = new JButton("Stop Server");
 		btnStopServer.setBounds(636, 41, 119, 23);
 		add(btnStopServer);
+		
+		btnSaveSettings = new JButton("Save Settings");
+		btnSaveSettings.setBounds(636, 72, 119, 23);
+		add(btnSaveSettings);
 		
 		/*
 		 * 	JScrollPanes
@@ -140,7 +146,7 @@ public class Server extends JPanel {
 		chckbxRelativePath = new JCheckBox("Relative Path Executable");
 		chckbxRelativePath.setBounds(10, 122, 200, 23);
 		add(chckbxRelativePath);
-		if(settings.isRelativePath()) {
+		if(serverSettings.isRelativePath()) {
 			chckbxRelativePath.setSelected(true);
 		}
 
@@ -158,6 +164,40 @@ public class Server extends JPanel {
 		btnStopServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stopServer();
+			}
+		});
+		
+		btnSaveSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SaveSettings("servers/", serverSettings);
+			}
+		});
+		
+		serverPath.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				serverSettings.setPath(serverPath.getText());
+			}
+		});
+		
+		serverExe.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				serverSettings.setExe(serverExe.getText());
+			}
+		});
+		
+		serverArg.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				serverSettings.setArg(serverArg.getText());
+			}
+		});
+		
+		chckbxRelativePath.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				serverSettings.setRelativePath(chckbxRelativePath.isSelected());
 			}
 		});
 		
