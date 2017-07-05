@@ -11,8 +11,8 @@ More information coming soon!
 
 ## Roadmap
 * [x] Prototype
-* [ ] Single Dedicated Server
-* [ ] Multiple Dedicated Servers
+* [x] Single Dedicated Server
+* [x] Multiple Dedicated Servers
 * [ ] Server Shortcuts
 * [ ] Custom Batch File Integration
 * [ ] Automatic Update
