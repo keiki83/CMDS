@@ -1,3 +1,8 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /*
  * Author: Michael R. Callan III
  * Version: 1.06
@@ -10,14 +15,16 @@ public class ServerSettings {
 	private String exe;
 	private String arg;
 	private Boolean relativePath;
+	private String savePath;
 	
 	
-	// constructors
-	public ServerSettings() {
+	// constructor
+	public ServerSettings(String savePath) {
 		name = "";
 		path = "";
 		exe = "";
 		arg = "";
+		this.savePath = savePath;
 		relativePath = false;
 	}
 	
@@ -61,6 +68,26 @@ public class ServerSettings {
 	
 	public Boolean isRelativePath() {
 		return relativePath;
+	}
+	
+	// Utility
+	public void saveSettings() {
+		Properties properties = new Properties();
+		try {
+			FileOutputStream out= new FileOutputStream(savePath + name + ".properties");
+			properties.setProperty("name", name);
+			properties.setProperty("path", path);
+			properties.setProperty("exe", exe);
+			properties.setProperty("arg", arg);
+			properties.setProperty("relative", relativePath.toString());
+			properties.store(out, null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 		
 }

@@ -13,6 +13,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 public class CMDS {
+	// Settings
+	private String savePath = "servers/";
+	
 	// GUI variables
 	private JFrame frmCmds;
 	private JButton btnRemoveServer;
@@ -64,7 +67,7 @@ public class CMDS {
 			@Override
 			public void mouseClicked(MouseEvent mouseClick) {
 				if(SwingUtilities.isLeftMouseButton(mouseClick)) {
-					ServerSettings settings = new ServerSettings();
+					ServerSettings settings = new ServerSettings(savePath);
 					settings.setName("Server");
 					tabbedPane.add(settings.getName(), new Server(settings));
 				}
@@ -86,7 +89,7 @@ public class CMDS {
 	}
 
 	private void loadServers() {		
-		LoadSettings servers = new LoadSettings("servers/");
+		LoadSettings servers = new LoadSettings(savePath);
 		while(servers.hasSettings()) {
 			tabbedPane.add(servers.peek().getName(), new Server(servers.pop()));
 		}

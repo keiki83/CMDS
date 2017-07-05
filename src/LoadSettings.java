@@ -13,11 +13,11 @@ import java.util.Properties;
 public class LoadSettings {
 	private LinkedList<ServerSettings> serverSettings;
 
-	public LoadSettings(String settingsPath) {
+	public LoadSettings(String savePath) {
 		serverSettings = new LinkedList<ServerSettings>();
 		
 		// Get list of server files
-		File serversFolder = new File(settingsPath);
+		File serversFolder = new File(savePath);
 		File[] serverFiles = serversFolder.listFiles();
 
 		// Load settings of each file
@@ -26,10 +26,10 @@ public class LoadSettings {
 				continue;
 			}
 
-			ServerSettings settings = new ServerSettings();
+			ServerSettings settings = new ServerSettings(savePath);
 
 			try {
-				FileInputStream in = new FileInputStream(settingsPath + "/" + serverFiles[i].getName());
+				FileInputStream in = new FileInputStream(savePath + "/" + serverFiles[i].getName());
 				Properties properties = new Properties();
 				properties.load(in);
 				if(properties.containsKey("name")) {

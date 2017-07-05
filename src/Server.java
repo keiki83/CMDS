@@ -169,7 +169,7 @@ public class Server extends JPanel {
 		
 		btnSaveSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SaveSettings("servers/", serverSettings);
+				serverSettings.saveSettings();
 			}
 		});
 		
