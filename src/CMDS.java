@@ -64,7 +64,9 @@ public class CMDS {
 			@Override
 			public void mouseClicked(MouseEvent mouseClick) {
 				if(SwingUtilities.isLeftMouseButton(mouseClick)) {
-					tabbedPane.add("Server", new Server(new ServerSettings()));
+					ServerSettings settings = new ServerSettings();
+					settings.setName("Server");
+					tabbedPane.add(settings.getName(), new Server(settings));
 				}
 			}
 		});

@@ -40,3 +40,11 @@ Modularized the code to allow for multiple servers to be handled via a tabbed pa
 
 Beginning to add communication to running dedicated servers, changed layout.
 
+![Prototype4](prototype4.png)
+
+Added options and save ability to GUI.
+
+![Prototype5](prototype5.png)
+
+Server configuration saved per server in a properties file within the servers folder.
+

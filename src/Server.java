@@ -64,15 +64,15 @@ public class Server extends JPanel {
 		 */
 		
 		lblWorkingDirectory = new JLabel("Working Directory");
-		lblWorkingDirectory.setBounds(10, 11, 86, 14);
+		lblWorkingDirectory.setBounds(10, 11, 119, 14);
 		add(lblWorkingDirectory);
 		
 		lblExecutable = DefaultComponentFactory.getInstance().createLabel("Executable");
-		lblExecutable.setBounds(10, 45, 92, 14);
+		lblExecutable.setBounds(10, 45, 119, 14);
 		add(lblExecutable);
 		
 		lblArguements = DefaultComponentFactory.getInstance().createLabel("Arguements");
-		lblArguements.setBounds(10, 76, 92, 14);
+		lblArguements.setBounds(10, 76, 119, 14);
 		add(lblArguements);
 		
 		JLabel lblOptions = new JLabel("Options");
